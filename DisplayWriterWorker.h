@@ -2,9 +2,12 @@
 #define TICTACTOE_DISPLAYWRITERWORKER_H
 
 #include <vector>
+#include <chrono>
+#include <thread>
 #include "Worker.h"
 #include "DisplayWriter.h"
 #include "MatrixCell.h"
+#include "AsciiEscapeCodes.h"
 #include "events/WritePlayerSymbolEvent.h"
 #include "events/WritePlayerPlaceholderEvent.h"
 #include "events/MovePlayerPlaceholderEvent.h"
@@ -84,6 +87,17 @@ class DisplayWriterWorker : public Worker {
 
     void move_player_placeholder(MovePlayerPlaceholderEvent* move_placeholder_ev) {
         if (!is_movement_legal(move_placeholder_ev->getStartingCoord(), move_placeholder_ev->getDirection())) {
+            
+            printf(AsciiEscapeCodes::RedTextColor);
+
+            auto current_coord = get_current_coordinate();
+            display_writer->write_placeholder_for(move_placeholder_ev->getPlayer().get_symbol(), current_coord);
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+            printf(AsciiEscapeCodes::ResetTextColor);
+            display_writer->write_placeholder_for(move_placeholder_ev->getPlayer().get_symbol(), current_coord);
+            
             event_queue.submit_event(new WaitPlayerInputEvent);
             return;
         }
