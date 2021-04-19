@@ -84,9 +84,23 @@ class DisplayWriterWorker : public Worker {
         }
         return -1;
     }
+    
+    void illegal_move(const Player& player)  {
+        printf(AsciiEscapeCodes::RedTextColor);
+        auto current_coord = get_current_coordinate();
+        display_writer->write_placeholder_for(player.get_symbol(), current_coord);
+        
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        
+        printf(AsciiEscapeCodes::ResetTextColor);
+        display_writer->write_placeholder_for(player.get_symbol(), current_coord);
+    }
 
     void move_player_placeholder(MovePlayerPlaceholderEvent* move_placeholder_ev) {
         if (!is_movement_legal(move_placeholder_ev->getStartingCoord(), move_placeholder_ev->getDirection())) {
+<<<<<<< HEAD
+            illegal_move(move_placeholder_ev->getPlayer());
+=======
             
             printf(AsciiEscapeCodes::RedTextColor);
 
@@ -98,6 +112,7 @@ class DisplayWriterWorker : public Worker {
             printf(AsciiEscapeCodes::ResetTextColor);
             display_writer->write_placeholder_for(move_placeholder_ev->getPlayer().get_symbol(), current_coord);
             
+>>>>>>> 4216db2 (Invalid move functionality)
             event_queue.submit_event(new WaitPlayerInputEvent);
             return;
         }
