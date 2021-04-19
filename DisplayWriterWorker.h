@@ -99,6 +99,7 @@ class DisplayWriterWorker : public Worker {
     void move_player_placeholder(MovePlayerPlaceholderEvent* move_placeholder_ev) {
         if (!is_movement_legal(move_placeholder_ev->getStartingCoord(), move_placeholder_ev->getDirection())) {
 <<<<<<< HEAD
+<<<<<<< HEAD
             illegal_move(move_placeholder_ev->getPlayer());
 =======
             
@@ -113,6 +114,9 @@ class DisplayWriterWorker : public Worker {
             display_writer->write_placeholder_for(move_placeholder_ev->getPlayer().get_symbol(), current_coord);
             
 >>>>>>> 4216db2 (Invalid move functionality)
+=======
+            illegal_move(move_placeholder_ev->getPlayer());
+>>>>>>> origin/main
             event_queue.submit_event(new WaitPlayerInputEvent);
             return;
         }
